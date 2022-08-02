@@ -30,8 +30,6 @@ function makePageForEpisodes(episodeList) {
     episode.appendChild(episodeImg);
     episode.appendChild(episodeSummary);
     root.appendChild(episode);
-    
-    console.log(episodeName.innerText);
   })
 }
 
