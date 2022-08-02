@@ -1,3 +1,39 @@
-#root {
-  color: red;
+body{
+  margin: 0;
+}
+
+#root{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: rgba(0, 0, 0, 0.082);
+  justify-content: space-around;
+  gap: 3rem;
+  padding: 3rem;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.episodes{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  background-color: white;
+  border-radius: 0.5rem;
+  border: black solid 1px;
+}
+
+.episode_names{
+  font-size: 1.3rem;
+  padding: 1rem;
+  border: black solid 1px;
+  border-radius: 2rem;
+}
+
+.episode_imgs{
+  border-radius: 0.5rem;
+}
+
+.episode_summarys{
+  text-align: left;
+  padding: 2rem 5rem 2rem 5rem;
 }
