@@ -1,4 +1,8 @@
-let root = document.querySelector('#root');
+const root = document.querySelector('#root');
+const searchInput = document.querySelector('#search_input');
+const numberOfEpisodes = document.querySelector('#number_of_episodes');
+
+searchInput.addEventListener('keyup', startSearch);
 
 //You can edit ALL of the code here
 function setup() {
@@ -11,7 +15,7 @@ function formatSeazonAndNumber(number ){
 }
 
 function makePageForEpisodes(episodeList) {
-  const root = document.getElementById("root");
+  root.replaceChildren([]);
   episodeList.forEach(epis => {
     let episode = document.createElement('div');
     episode.className = 'episodes';
@@ -33,6 +37,15 @@ function makePageForEpisodes(episodeList) {
   })
 }
 
+function startSearch(){
+  const allEpisodes = getAllEpisodes();
+  let searchValue = searchInput.value.toLowerCase();
+  let foundEpisodes = allEpisodes.filter((episode) => {
+   return episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue);
+  })
+  makePageForEpisodes(foundEpisodes);
+  numberOfEpisodes.innerText = `Displaying ${foundEpisodes.length}/${allEpisodes.length} episodes`;
+}
 
 
 window.onload = setup;
