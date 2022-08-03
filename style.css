@@ -40,10 +40,26 @@ body{
 
 #search_block{
   display: flex;
-  margin: 1rem 0 1rem 2rem;
+  margin-left: 2rem;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
   gap: 2rem;
 }
 
 #search_input{
-  width: 20vw;
+  width: 30vw;
+  height: 1.7rem;
+}
+
+#head_block{
+  display: flex;
+}
+
+#episode_select{
+  width: 30vw;
+}
+
+#number_of_episodes{
+  margin: 0;
 }
