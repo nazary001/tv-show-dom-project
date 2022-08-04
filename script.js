@@ -3,10 +3,13 @@ const searchInput = document.querySelector('#search_input');
 const numberOfEpisodes = document.querySelector('#number_of_episodes');
 const selectEpisode = document.querySelector('#episode_select');
 
-const allEpisodes = getAllEpisodes();
+let allEpisodes = '';
+
+fetch('https://api.tvmaze.com/shows/82/episodes')
+.then(response => response.json())
+.then(data => {allEpisodes = data});
 
 searchInput.addEventListener('keyup', searchEpisode);
-
 
 //You can edit ALL of the code here
 function setup() {
