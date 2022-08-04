@@ -3,24 +3,21 @@ const searchInput = document.querySelector('#search_input');
 const numberOfEpisodes = document.querySelector('#number_of_episodes');
 const selectEpisode = document.querySelector('#episode_select');
 
-searchInput.addEventListener('keyup', startSearch);
+const allEpisodes = getAllEpisodes();
+
+searchInput.addEventListener('keyup', searchEpisode);
 
 
 //You can edit ALL of the code here
 function setup() {
-  const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
-}
-
-function formatSeazonAndNumber(number ){
-  return number >= 10 ? number : `0${number}`;
 }
 
 function makePageForEpisodes(episodeList) {
   root.replaceChildren([]);
-  episodeList.forEach(epis => {
-    let episode = document.createElement('div');
-    episode.className = 'episodes';
+  episodeList.forEach(episode => {
+    let episodeDiv = document.createElement('div');
+    episodeDiv.className = 'episodes';
     let episodeName = document.createElement('h1');
     episodeName.className = 'episode_names';
     let episodeImg = document.createElement('img');
@@ -28,24 +25,23 @@ function makePageForEpisodes(episodeList) {
     let episodeSummary = document.createElement('p');
     episodeSummary.className = 'episode_summarys';
     let episodeOption = document.createElement('option');
-    episodeOption.value = epis.name;
+    episodeOption.value = episode.name;
     
-    episodeName.innerText = `${epis.name} S${formatSeazonAndNumber(epis.season)}E${formatSeazonAndNumber(epis.number)}`;
-    episodeImg.src = epis.image.medium;
-    episodeSummary.innerHTML = epis.summary;
-    episodeOption.textContent = `S${formatSeazonAndNumber(epis.season)}E${formatSeazonAndNumber(epis.number)} - ${epis.name}`;
+    episodeName.innerText = `${episode.name} S${episode.season.toString().padStart(2, '0')}E${episode.number.toString().padStart(2, '0')}`;
+    episodeImg.src = episode.image.medium;
+    episodeSummary.innerHTML = episode.summary;
+    episodeOption.textContent = `S${episode.season.toString().padStart(2, '0')}E${episode.number.toString().padStart(2, '0')} - ${episode.name}`;
 
-    episode.appendChild(episodeName);
-    episode.appendChild(episodeImg);
-    episode.appendChild(episodeSummary);
-    root.appendChild(episode);
+    episodeDiv.appendChild(episodeName);
+    episodeDiv.appendChild(episodeImg);
+    episodeDiv.appendChild(episodeSummary);
+    root.appendChild(episodeDiv);
     selectEpisode.appendChild(episodeOption);
   })
 }
 
-function startSearch(){
-  const allEpisodes = getAllEpisodes();
-  let searchValue = searchInput.value.toLowerCase();
+function searchEpisode(event){
+  let searchValue = event.target.value.toLowerCase();
   let foundEpisodes = allEpisodes.filter((episode) => {
    return episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue);
   })
@@ -55,11 +51,9 @@ function startSearch(){
 
 selectEpisode.addEventListener('change', (evnt) => {
   if(evnt.target.value === 'all_episodes'){
-    const allEpisodes = getAllEpisodes();
     makePageForEpisodes(allEpisodes);
   }
   else{
-    const allEpisodes = getAllEpisodes();
     let foundEpisode = allEpisodes.filter((episode) => {
     return evnt.target.value === episode.name ? true : false;
     })
