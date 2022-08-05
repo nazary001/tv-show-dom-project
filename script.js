@@ -2,18 +2,36 @@ const root = document.querySelector('#root');
 const searchInput = document.querySelector('#search_input');
 const numberOfEpisodes = document.querySelector('#number_of_episodes');
 const selectEpisode = document.querySelector('#episode_select');
+const selectShow = document.querySelector('#show_select');
+
+const allShows = getAllShows();
 
 let allEpisodes = '';
 
-fetch('https://api.tvmaze.com/shows/82/episodes')
-.then(response => response.json())
-.then(data => {allEpisodes = data});
+function makePageForShows(showList){
+  showList.forEach(show => {
+    let showOption = document.createElement('option');
+    showOption.innerText = show.name;
+    showOption.value = show.id;
+
+    selectShow.appendChild(showOption);
+  })
+  
+}
+
+selectShow.addEventListener('change', event => {
+  fetch(`https://api.tvmaze.com/shows/${event.target.value}/episodes`)
+  .then(response => response.json())
+  .then(data => {allEpisodes = data});
+
+  makePageForEpisodes(allEpisodes);
+})
 
 searchInput.addEventListener('keyup', searchEpisode);
 
 //You can edit ALL of the code here
 function setup() {
-  makePageForEpisodes(allEpisodes);
+  makePageForShows(allShows);
 }
 
 function makePageForEpisodes(episodeList) {
