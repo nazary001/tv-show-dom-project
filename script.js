@@ -22,9 +22,10 @@ function makePageForShows(showList){
 selectShow.addEventListener('change', event => {
   fetch(`https://api.tvmaze.com/shows/${event.target.value}/episodes`)
   .then(response => response.json())
-  .then(data => {allEpisodes = data});
-
-  makePageForEpisodes(allEpisodes);
+  .then(data => {
+    allEpisodes = data;
+    makePageForEpisodes(allEpisodes);
+  });
 })
 
 searchInput.addEventListener('keyup', searchEpisode);
