@@ -2,64 +2,100 @@ body{
   margin: 0;
 }
 
-#root{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  background-color: rgba(0, 0, 0, 0.082);
-  justify-content: space-around;
-  gap: 3rem;
-  padding: 3rem;
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+p{
+  margin: 0;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
-.episodes{
+h2{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#site_label{
+  margin-left: 5rem;
+  color: white;
+}
+
+#header{
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  height: 5rem;
+  background-color: rgb(73, 73, 73);
+}
+
+.show,
+.episode{
+  margin: 3rem;
+  padding: 2rem;
+  border: solid black 1px;
+  border-radius: 0.5rem;
+  box-shadow: 0.5rem 0.5rem 1rem;
+}
+
+.content_show,
+.content_episode{
+  display: flex;
+  gap: 2rem;
+}
+
+.showName{
+  font-size: 3rem;
+  cursor: pointer;
+  width: 30vw;
+}
+
+.show_summary{
+  width: 60%;
+  font-size: 1.7rem;
+}
+
+.episode_summary{
+  font-size: 1.7rem;
+}
+
+.show_img,
+.episode_img{
+  width: 13rem;
+  height: 17rem;
+}
+
+.episode_name{
+  font-size: 3rem;
+}
+
+.additional_show_info{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-color: white;
+  padding: 2rem;
+  border: solid black 1px;
   border-radius: 0.5rem;
-  border: black solid 1px;
-  box-shadow: 0.5rem 0.5rem 1rem black;
-}
-
-.episode_names{
-  font-size: 1.3rem;
-  padding: 1rem;
-  border: black solid 1px;
-  border-radius: 1rem;
-}
-
-.episode_imgs{
-  border-radius: 0.5rem;
-}
-
-.episode_summarys{
-  text-align: left;
-  padding: 2rem 5rem 2rem 5rem;
+  box-shadow: 0.2rem 0.2rem 0.3rem;
+  height: 8rem;
+  width: 15rem;
+  gap: 1rem;
 }
 
 #search_block{
   display: flex;
-  margin-left: 2rem;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
+  margin: 1rem 0 0 3rem;
+  gap: 3rem;
 }
 
-#search_input{
-  width: 30vw;
-  height: 1.7rem;
+#search_input,
+#show_and_episode_select{
+  padding: 0.8rem;
+  width: 25vw;
+  font-size: 1.1rem;
 }
 
-#head_block{
-  display: flex;
-}
-
-#episode_select{
-  width: 30vw;
-}
-
-#number_of_episodes{
+#number_of_shows_and_episodes{
   margin: 0;
+  align-self: center;
+  font-size: 1.5rem;
+}
+
+.filtering_for{
+  align-self: center;
+  font-size: 1.5rem;
 }
