@@ -4,23 +4,31 @@ const numberOfShowsAndEpisodes = document.querySelector('#number_of_shows_and_ep
 const selectShowAndEpisode = document.querySelector('#show_and_episode_select');
 
 const allShows = getAllShows();
-
+let allEpisodes = [];
 let isEpisodesClicked = false;
 
-let allEpisodes = '';
-
-function makePageForShows(showList){
-  root.replaceChildren([]);
+function makeSelectForShows(shows) {
   selectShowAndEpisode.replaceChildren([]);
-
-  numberOfShowsAndEpisodes.innerText = `Found ${showList.length} show(s)`;
-
+  
   let allShowsOption = document.createElement('option');
   allShowsOption.value = 'all_shows';
   allShowsOption.innerText = 'All Shows';
   selectShowAndEpisode.appendChild(allShowsOption);
 
-  showList.forEach(show => {
+  shows.forEach(show => {
+    let showOption = document.createElement('option');
+
+    showOption.value = show.name;
+    showOption.innerText = show.name;
+    selectShowAndEpisode.appendChild(showOption);
+  });
+}
+
+function makePageForShows(shows){
+  root.replaceChildren([]);
+  numberOfShowsAndEpisodes.innerText = `Found ${shows.length} show(s) / out of ${allShows.length}`;
+
+  shows.forEach(show => {
     let showDiv = document.createElement('div');
     showDiv.className = 'show';
     let contentShowDiv = document.createElement('div');
@@ -58,37 +66,42 @@ function makePageForShows(showList){
     showDiv.appendChild(contentShowDiv);
     root.appendChild(showDiv);
 
-    let showOption = document.createElement('option');
-
-    showOption.value = show.name;
-    showOption.innerText = show.name;
-    selectShowAndEpisode.appendChild(showOption);
-
     showName.addEventListener('click', () => {
       fetch(`https://api.tvmaze.com/shows/${show.id}/episodes`)
       .then(response => response.json())
       .then(data => {
         allEpisodes = data;
+        isEpisodesClicked = true;
+        makeSelectForEpisodes(allEpisodes);
         makePageForEpisodes(allEpisodes);
       })
     })
   })
 }
 
-searchInput.addEventListener('keyup', searchShow);
-
-function makePageForEpisodes(episodeList) {
-  root.replaceChildren([]);
+function makeSelectForEpisodes(episodes) {
   selectShowAndEpisode.replaceChildren([]);
+  
+  let allShowsOption = document.createElement('option');
+  allShowsOption.value = 'all_episodes';
+  allShowsOption.innerText = 'All Episodes';
+  selectShowAndEpisode.appendChild(allShowsOption);
 
-  numberOfShowsAndEpisodes.innerText = `Found ${episodeList.length} episode(s)`;
+  episodes.forEach(episode => {
+    let episodeOption = document.createElement('option');
 
-  let allEpisodesOption = document.createElement('option');
-  allEpisodesOption.value = 'all_episodes';
-  allEpisodesOption.innerText = 'All Episodes';
-  selectShowAndEpisode.appendChild(allEpisodesOption);
+    episodeOption.value = episode.name;
+    episodeOption.innerText = episode.name;
+    selectShowAndEpisode.appendChild(episodeOption);
+  });
+}
 
-  episodeList.forEach(episode => {
+function makePageForEpisodes(episodes) {
+  root.replaceChildren([]);
+
+  numberOfShowsAndEpisodes.innerText = `Found ${episodes.length} episode(s) / out of ${allEpisodes.length}`;
+
+  episodes.forEach(episode => {
     let episodeDiv = document.createElement('div');
     episodeDiv.className = 'episode';
     let contentEpisodeDiv = document.createElement('div');
@@ -110,21 +123,25 @@ function makePageForEpisodes(episodeList) {
     contentEpisodeDiv.appendChild(episodeSummary);
     episodeDiv.appendChild(contentEpisodeDiv);
     root.appendChild(episodeDiv);
-
-    let episodeOption = document.createElement('option');
-
-    episodeOption.value = episode.name;
-    episodeOption.innerText = episode.name;
-    selectShowAndEpisode.appendChild(episodeOption);
-
-    isEpisodesClicked = true;
-  })
+  });
 }
 
-function searchShow(event){
+searchInput.addEventListener('keyup', searchItems);
+
+function searchItems(event){
   let searchValue = event.target.value.toLowerCase();
-  if(!isEpisodesClicked){
-    if(searchValue.length >= 3){
+  if (isEpisodesClicked){
+    if(searchValue.length >= 3) {
+      let foundEpisodes = allEpisodes.filter((episode) => {
+        return episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue);
+      }) 
+      makePageForEpisodes(foundEpisodes);
+    }
+    else{
+      makePageForEpisodes(allEpisodes);
+    }
+  } else {
+    if(searchValue.length >= 3) {
       let foundShows = allShows.filter((show) => {
         return show.name.toLowerCase().includes(searchValue) || show.summary.toLowerCase().includes(searchValue);
       }) 
@@ -134,17 +151,7 @@ function searchShow(event){
       makePageForShows(allShows);
     }
   }
-  else if(isEpisodesClicked){
-    if(searchValue.length >= 3){
-      let foundEpisodes = allEpisodes.filter((episode) => {
-        return episode.name.toLowerCase().includes(searchValue) || episode.summary.toLowerCase().includes(searchValue);
-      }) 
-      makePageForEpisodes(foundEpisodes);
-    }
-    else{
-      makePageForEpisodes(allEpisodes);
-    }
-  }
+
 }
 
 selectShowAndEpisode.addEventListener('change', (evnt) => {
@@ -163,12 +170,13 @@ selectShowAndEpisode.addEventListener('change', (evnt) => {
   else if(isEpisodesClicked){
     let foundEpisode = allEpisodes.filter((episode) => {
       return evnt.target.value === episode.name ? true : false;
-      })
-      makePageForEpisodes(foundEpisode);
-  }
-})
+    });
+    makePageForEpisodes(foundEpisode);
+    }
+});
 
 function setup() {
+  makeSelectForShows(allShows)
   makePageForShows(allShows);
 }
 
